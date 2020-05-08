@@ -1,0 +1,24 @@
+﻿{
+  "Settings": {
+    "Common": {
+      "login": "auto.userchik",
+      "email": "auto.userchik@yandex.ru",
+      "gmail": "auto.userchik@gmail.com",
+      "password": "Qwerty100*",
+      "firstname": "Automation",
+      "lastname": "Userchik",
+      "emptyloginerror": "Логин не указан",
+      "emptypassworderror": "Пароль не указан",
+      "invalidlogin": "auto.userchik.invalid",
+      "invalidloginerror": "Такого аккаунта нет",
+      "invalidpassword": "Qwerty100*invalid",
+      "invalidpassworderror": "Неверный пароль",
+      "registrationpagetitle": "Регистрация",
+      "yadiskpagetitle": "Яндекс.Диск",
+      "updatedcontent": " updated",      
+      "secondfolder": "secondfolder",
+      "screenshotdirectory": "D:\\New folder\\Yandex_practice\\TestResults\\Screenshots\\",
+      "url": "https://passport.yandex.ru/"
+    }
+  }
+}
