@@ -1,0 +1,17 @@
+﻿{
+  "Driver": {
+    "browserName": "Chrome",
+    "url": "https://passport.yandex.ru/",
+    "screenshotdirectory": "screenshots\\"
+  },
+  "ValidUser": {
+    "login": "auto.userchik",
+    "email": "auto.userchik@yandex.ru",
+    "gmail": "auto.userchik@gmail.com",
+    "password": "Qwerty100*"
+  },
+  "InvalidUser": {
+    "invalidlogin": "auto.userchik.invalid",
+    "invalidpassword": "Qwerty100*invalid"
+  }
+}

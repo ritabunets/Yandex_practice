@@ -1,24 +1,21 @@
-﻿using System;
-using Yandex_practice.WrapperFactory;
-using NUnit.Framework;
-using OpenQA.Selenium;
-using Selenium.Community.PageObjects;
-using Yandex_practice.TestConfig;
-using OpenQA.Selenium.Support.UI;
+﻿using Yandex_practice.WrapperFactory;
+using Yandex_practice.Common.WebElements;
+using NLog;
 
 namespace Yandex_practice.PageObjects
 {
     public class PassportPage
     {
-        [FindsBy(how: How.XPath, @using: "//a[@href='/profile/services']")]
-        private IWebElement _myServices;
+        private UIElement _yaDisk = new UIElement(Common.Enums.FindBy.XPath, "//a[contains(text(),'Диск')]");
 
-        [FindsBy(how: How.XPath, @using: "//a[contains(text(),'Диск')]")]
-        private IWebElement _yaDisk;
+        private UIElement _myServices = new UIElement(Common.Enums.FindBy.XPath, "//a[@href='/profile/services']");
+
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
 
         public void OpenYaDisk()
         {
+            logger.Debug("Open Yandex Disk");
             _myServices.Click();
             WebDriverFactory.ReloadThePage();
             _yaDisk.Click();

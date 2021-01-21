@@ -1,268 +1,187 @@
 ﻿using Yandex_practice.WrapperFactory;
-using OpenQA.Selenium;
-using Selenium.Community.PageObjects;
-using Yandex_practice.TestConfig;
+using Yandex_practice.Tests.TestConfig;
 using NLog;
+using Yandex_practice.Common.WebElements;
+using OpenQA.Selenium;
+using Yandex_practice.Common.Extensions;
 
 namespace Yandex_practice.PageObjects
-{
+{    
     public class AuthenticationPage
-    {   
-        [FindsBy(how: How.XPath, @using: "//a[@class='control link link_theme_normal passp-auth-header-link passp-auth-header-link_visible']")]
-        private IWebElement _registrationLink;
+    {                         
+        private UIElement _loginInput = new UIElement(Common.Enums.FindBy.XPath,"//input[@id='passp-field-login']");
 
-        [FindsBy(how: How.XPath, @using: "//a[@class='control link link_theme_normal passp-auth-header-link passp-auth-header-link_visible']")]
-        private IWebElement _otherAccountLink;
+        private UIElement _passwordInput = new UIElement(Common.Enums.FindBy.XPath, "//input[@id='passp-field-passwd']");
 
-        [FindsBy(how: How.XPath, @using: "//input[@id='passp-field-login']")]
-        private IWebElement _loginInput;
+        private UIElement _forgotLoginLink = new UIElement(Common.Enums.FindBy.XPath, "//a[contains(text(), 'логин')]");
 
-        [FindsBy(how: How.XPath, @using: "//input[@id='passp-field-passwd']")]
-        private IWebElement _passwordInput;
+        private UIElement _forgotPasswordLink = new UIElement(Common.Enums.FindBy.XPath, "//a[contains(text(), 'пароль')]");
 
-        [FindsBy(how: How.XPath, @using: "//a[@class='control link link_theme_normal'][1]")]
-        private IWebElement _forgotLoginLink;
+        private UIElement _logInButton = new UIElement(Common.Enums.FindBy.XPath, "//button[@data-t='button:action']");
 
-        [FindsBy(how: How.XPath, @using: "//a[@class='control link link_theme_normal link_pseudo_yes']")]
-        private IWebElement _forgotPasswordLink;
+        private UIElement _qrCodeButton = new UIElement(Common.Enums.FindBy.XPath, "//button[@data-t='provider:primary:qr']");
 
-        [FindsBy(how: How.XPath, @using: "//button[@class='control button2 button2_view_classic button2_size_l button2_theme_action button2_width_max button2_type_submit passp-form-button']")]
-        private IWebElement _logInButton;
+        private UIElement _registrationButton = new UIElement(Common.Enums.FindBy.XPath, "//*[contains(text(), 'Зарегистрироваться')]/ancestor::a");
+              
+        private UIElement _iconGoogle = new UIElement(Common.Enums.FindBy.XPath, "//button[@data-t='provider:primary:gg']");
+               
+        private UIElement _iconMore = new UIElement(Common.Enums.FindBy.XPath, "//button[@data-t='provider:more']");
+        
+        private UIElement _personalInfoFirstName = new UIElement(Common.Enums.FindBy.XPath, "//div[@class='personal-info__first']");
 
-        [FindsBy(how: How.XPath, @using: "//button[@class='control button2 button2_view_classic button2_size_l button2_theme_action button2_width_max passp-sign-in-button__magic-link']")]
-        private IWebElement _qrCodeButton;
+        private UIElement _personalInfoLastName = new UIElement(Common.Enums.FindBy.XPath, "//div[@class='personal-info__last']");
 
-        [FindsBy(how: How.XPath, @using: "//a[@class='control button2 button2_view_classic button2_size_l button2_theme_normal button2_width_max button2_type_link passp-form-button']")]
-        private IWebElement _registrationButton;
+        private UIElement _loginInputGoogle = new UIElement(Common.Enums.FindBy.XPath, "//input[@type='email']");
 
-        [FindsBy(how: How.XPath, @using: "//li[@class='passp-social-block__list-item passp-social-block__list-item-vk']")]
-        private IWebElement _iconVk;
+        private UIElement _loginNextButtonGoogle = new UIElement(Common.Enums.FindBy.XPath, "//div[@id='identifierNext']");
 
-        [FindsBy(how: How.XPath, @using: "//li[@class='passp-social-block__list-item passp-social-block__list-item-fb']")]
-        private IWebElement _iconFacebook;
+        private UIElement _passwordNextButtonGoogle = new UIElement(Common.Enums.FindBy.XPath, "//div[@id='passwordNext']");
 
-        [FindsBy(how: How.XPath, @using: "//li[@class='passp-social-block__list-item passp-social-block__list-item-gg']")]
-        private IWebElement _iconGoogle;
+        private UIElement _passwordInputGoogle = new UIElement(Common.Enums.FindBy.XPath, "//input[@type='password']");
 
-        [FindsBy(how: How.XPath, @using: "//li[@class='passp-social-block__list-item passp-social-block__list-item_more']")]
-        private IWebElement _iconMore;
+        private UIElement _errorText = new UIElement(Common.Enums.FindBy.XPath, "//div[@class='Textinput-Hint Textinput-Hint_state_error']");
 
-        [FindsBy(how: How.XPath, @using: "//li[@class='passp-social-block__list-item passp-social-block__list-item-mr passp-social-block__list-item-secondary']")]
-        private IWebElement _iconMailRu;
+        private UIElement _eyeIcon = new UIElement(Common.Enums.FindBy.XPath, "//button[@title='Показать текст пароля']");
 
-        [FindsBy(how: How.XPath, @using: "//li[@class='passp-social-block__list-item passp-social-block__list-item-ok passp-social-block__list-item-secondary']")]
-        private IWebElement _iconOk;
+        private UIElement _previousStepControl = new UIElement(Common.Enums.FindBy.XPath, "//a[@data-t='backpane']");
 
-        [FindsBy(how: How.XPath, @using: "//li[@class='passp-social-block__list-item passp-social-block__list-item-tw passp-social-block__list-item-secondary']")]
-        private IWebElement _iconTwitter;
+        private UIElement _currentAccountControl = new UIElement(Common.Enums.FindBy.XPath, "//a[@class='CurrentAccount']");
 
-        [FindsBy(how: How.XPath, @using: "//div[@class='personal-info__first']")]
-        private IWebElement _personalInfoFirstName;
+        private UIElement _forgotLoginForm = new UIElement(Common.Enums.FindBy.XPath, "//form[@class='UserEntryFlow-form']");
 
-        [FindsBy(how: How.XPath, @using: "//div[@class='personal-info__last']")]
-        private IWebElement _personalInfoLastName;
+        private UIElement _qrCodeForm = new UIElement(Common.Enums.FindBy.XPath, "//div[@class='passp-auth-content']");
 
-        [FindsBy(how: How.XPath, @using: "//input[@type='email']")]
-        private IWebElement _loginInputGoogle;
-
-        [FindsBy(how: How.XPath, @using: "//div[@id='identifierNext']")]
-        private IWebElement _loginNextButtonGoogle;
-
-        [FindsBy(how: How.XPath, @using: "//div[@id='passwordNext']")]
-        private IWebElement _passwordNextButtonGoogle;
-
-        [FindsBy(how: How.XPath, @using: "//input[@type='password']")]
-        private IWebElement _passwordInputGoogle;
-
-        [FindsBy(how: How.XPath, @using: "//div[@class='passp-form-field__error']")]
-        private IWebElement _errorText;
-
-        [FindsBy(how: How.XPath, @using: "//span[@class='passp-password-field__eye passp-password-field__eye_closed passp-password-field__eye_hidden']")]
-        private IWebElement _eyeIcon;
-
-        [FindsBy(how: How.XPath, @using: "//a[@class='control link link_theme_normal passp-previous-step-button']")]
-        private IWebElement _previousStepControl;
-
-        [FindsBy(how: How.XPath, @using: "//a[@class='control link link_theme_normal passp-current-account passp-current-account_without-login']")]
-        private IWebElement _currentAccountControl;
-
-        [FindsBy(how: How.XPath, @using: "//div[@class='login-restore__wrapper']")]
-        private IWebElement _forgotLoginForm;
-
-        [FindsBy(how: How.XPath, @using: "//div[@class='passp-auth-screen passp-magic-page passp-route-enter-done']")]
-        private IWebElement _qrCodeForm;
-
-        [FindsBy(how: How.XPath, @using: "//div[@class='passp-route-forward']")]
-        private IWebElement _forgotPasswordForm;
-
+        private UIElement _forgotPasswordForm = new UIElement(Common.Enums.FindBy.XPath, "//form[@class='passp-normal_margin-form']");
+        
         private static Logger logger = LogManager.GetCurrentClassLogger();
+
+        public static UIElement PrimarySocialNetwork(string primaryValue) => new UIElement(Common.Enums.FindBy.XPath, $"//button[@data-t='provider:primary:{primaryValue}']");
+
+        public static UIElement SecondarySocialNetwork(string secondaryValue) => new UIElement(Common.Enums.FindBy.XPath, $"//button[@data-t='provider:secondary:{secondaryValue}']");        
+
+        public void FillInLoginInput(string value)
+        {
+            logger.Debug("Fill In Login Input");
+            _loginInput.SendKeys(value);
+        }
+
+        public void FillInPasswordInput(string value)
+        {
+            logger.Debug("Fill In Password Input");
+            _passwordInput.SendKeys(value);
+        }
+        
+        public string GetPersonalInfo()
+        {
+            logger.Debug("Get Personal Info");
+            string FirstName = _personalInfoFirstName.Text;
+            string LastName = _personalInfoLastName.Text;
+            string PersonalInfo = FirstName + " " + LastName;
+            return PersonalInfo;
+        }            
 
         public void LogIn()
         {
-            _loginInput.SendKeys(Constants.login);
-            _logInButton.Click();
-            logger.Debug("Fill in login");
-            _passwordInput.SendKeys(Constants.password);
-            _logInButton.Click();
-            logger.Debug("Fill in password");
+            logger.Debug("Fill In Login Input");
+            FillInLoginInput(Constants.login);
+            ClickLogInButton();
+            logger.Debug("Fill In Password Input");
+            FillInPasswordInput(Constants.password);
+            ClickLogInButton();
         }
-
-        public string GetPersonalInfoFirstName()
+                
+        public void LogInWithGoogle(string gmaillogin, string gmailpassword)
         {
-            logger.Debug("Get First name");
-            return _personalInfoFirstName.Text;
-        }
-
-        public string GetPersonalInfoLastName()
-        {
-            logger.Debug("Get Last name");
-            return _personalInfoLastName.Text;
-        }
-        
-        public void LogInWithGoogle()
-        {
+              logger.Debug("Log in with google");
               _iconGoogle.Click();
               WebDriverFactory.SwitchToNewWindow();
-              _loginInputGoogle.SendKeys(Constants.gmail);
+              _loginInputGoogle.SendKeys(gmaillogin);
               _loginNextButtonGoogle.Click();
-              _passwordInputGoogle.SendKeys(Constants.password);
+              _passwordInputGoogle.ConfirmElementDisplayed();
+              _passwordInputGoogle.SendKeys(gmailpassword);
               _passwordNextButtonGoogle.Click();
-              WebDriverFactory.SwitchToOriginalWindow();              
-        }
+              WebDriverFactory.SwitchToFirstWindow();
+        }      
 
         public string GetErrorText()
         {
+            logger.Debug("Get Error text");
+            _errorText.ConfirmTextNotNull();
             return _errorText.Text;
-        }
-
-        public void FillInLoginValid()
-        {
-            _loginInput.SendKeys(Constants.login);
-        }
-
-        public void FillInPasswordValid()
-        {
-            _passwordInput.SendKeys(Constants.password);
         }
 
         public void ClickLogInButton()
         {
+            logger.Debug("Click Login Button");
             _logInButton.Click();
         }
-
-        public void FillInLoginInvalid()
+               
+        public string NavigateRegistationPage()
         {
-            _loginInput.SendKeys(Constants.invalidlogin);
+            logger.Debug("Open Registation Page");
+            _registrationButton.Click();
+            return WebDriverFactory.Driver.Title;  
         }
 
-        public void FillInPasswordInvalid()
+        public bool NavigateForgotLoginForm()
         {
-            _passwordInput.SendKeys(Constants.invalidpassword);
-        }
-
-        public void FollowRegistationLink()
-        {
-            _registrationLink.Click();                     
-        }
-
-        public void ClickRegistationButton()
-        {
-            _registrationButton.Click();                       
-        }
-
-        public bool GetForgotLoginForm()
-        {
+            logger.Debug("Open Forgot Login Page");
+            _forgotLoginLink.Click();
             return _forgotLoginForm.Displayed;
-        }
-        
-        public void FollowForgotLoginLink()
-        {
-            _forgotLoginLink.Click();                     
-        }
+        }           
 
-        public bool GetQrCodeForm()
+        public bool ClickQrCodeButton()
         {
+            logger.Debug("Open Login with QR-code Page");
+            _qrCodeButton.Click();
             return _qrCodeForm.Displayed;
         }
 
-        public void ClickQrCodeButton()
+        public bool GetPrimarySocial(string primaryValue)
         {
-            _qrCodeButton.Click();                       
+            logger.Debug("Get Primary Social Network");
+            return PrimarySocialNetwork(primaryValue).Displayed;
         }
 
-        public bool GetVkIcon()
+        public bool GetSecondarySocial(string secondaryValue)
         {
-            return _iconVk.Displayed;
+            logger.Debug("Get Primary Secondary Network");
+            return SecondarySocialNetwork(secondaryValue).Displayed;
         }
 
-        public bool GetFacebookIcon()
+        public void GetSecondarySocialNetworks()
         {
-            return _iconFacebook.Displayed;
-        }
-
-        public bool GetGoogleIcon()
-        {
-            return _iconGoogle.Displayed;
-        }
-
-        public bool GetMailRuIcon()
-        {
-            return _iconMailRu.Displayed;
-        }
-
-        public bool GetOkIcon()
-        {
-            return _iconOk.Displayed;
-        }
-
-        public bool GetTwitterIcon()
-        {
-            return _iconTwitter.Displayed;
-        }
-
-        public void OpenMoreSocialNetworksControls()
-        {
+            logger.Debug("Show Secondary Networks");
             _iconMore.Click();
         }
 
-        public bool GetForgotPasswordForm()
+        public bool NavigateForgotPasswordForm()
         {
-            return _forgotPasswordForm.Displayed;
-        }
+           logger.Debug("Open Forgot Password Page");
+           _forgotPasswordLink.Click();
+           return _forgotPasswordForm.Displayed;           
+        }                 
 
-        public void FollowFogotPasswordLink()
-        {            
-            _forgotPasswordLink.Click();                     
-        }
-
-        public string GetPasswordInputType()
+        public string ClickEyeControl()
         {
+            logger.Debug("Click Show Password control");
+            _eyeIcon.Click();
             return _passwordInput.GetAttribute("type");
         }
 
-        public void ClickEyeControl()
-        {           
-            _eyeIcon.Click();           
-        }
-
-        public void ClickBackControl()
-        {            
-            _previousStepControl.Click();           
-        }
-
-        public string GetLoginInputValue()
+        public string ClickBackControl()
         {
+            logger.Debug("Click Back control");
+            _previousStepControl.Click();
             return _loginInput.GetAttribute("value");
         }
-
-        public void ClickCurrentAccountControl()
+        
+        public string ClickCurrentAccountControl()
         {
-            _currentAccountControl.Click();                      
+            logger.Debug("Click Current Account control");
+            _currentAccountControl.Click();
+            return _loginInput.GetAttribute("value");
         }
-
-        public void ClickOtherAccountControl()
-        {
-            _otherAccountLink.Click();            
-        }
+        
     }
 }

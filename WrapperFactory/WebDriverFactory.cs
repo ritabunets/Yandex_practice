@@ -1,61 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
+using Yandex_practice.Tests.TestConfig;
 
 namespace Yandex_practice.WrapperFactory
 {
-    public class WebDriverFactory
+    public static class WebDriverFactory
     {
-        private static readonly IDictionary<string, IWebDriver> Drivers = new Dictionary<string, IWebDriver>();
-        private static IWebDriver _driver;
+        private static ThreadLocal<IWebDriver> _driverThreadLocal;
 
-        public static IWebDriver Driver
-        {
+        public static IWebDriver Driver {
             get
             {
-                if (_driver == null)
-                    throw new NullReferenceException("The WebDriver browser instance was not initialized." +
-                        " You should first call the method InitBrowser.");
+                if (_driverThreadLocal == null)
+                {
+                    InitBrowser(Constants.browserName);
+                }
 
-                return _driver;
-            }
-            private set
-            {
-                _driver = value;
+                return _driverThreadLocal.Value;
             }
         }
 
         public static void InitBrowser(string browserName)
         {
+            if(_driverThreadLocal == null)
+            {
+                _driverThreadLocal = new ThreadLocal<IWebDriver>();
+            }
+
             switch (browserName)
             {
                 case "Chrome":
-                    if (_driver == null)
+                    if (_driverThreadLocal.Value == null)
                     {
-                        _driver = new ChromeDriver();
-                        Drivers.Add("Chrome", _driver);
+                        _driverThreadLocal.Value = new ChromeDriver();
                     }
 
                     break;
 
                 case "Firefox":
-                    if (_driver == null)
+                    if (_driverThreadLocal.Value == null)
                     {
-                        _driver = new FirefoxDriver();
-                        Drivers.Add("Firefox", _driver);
+                        _driverThreadLocal.Value = new FirefoxDriver();
                     }
 
                     break;
 
                 case "IE":
-                    if (_driver == null)
+                    if (_driverThreadLocal.Value == null)
                     {
-                        _driver = new InternetExplorerDriver();
-                        Drivers.Add("IE", _driver);
+                        _driverThreadLocal.Value = new InternetExplorerDriver();
                     }
 
                     break;
@@ -67,61 +64,42 @@ namespace Yandex_practice.WrapperFactory
             Driver.Url = url;
         }
 
-        public static string GetTitle()
-        {
-            string Title = _driver.Title;
-            return Title;
-        }
-
-        public static void BackToPreviousePage()
-        {
-            _driver.Navigate().Back();
-        }
-
         public static void SwitchToNewWindow()
         {
-            string newWindow = _driver.WindowHandles[_driver.WindowHandles.Count - 1].ToString();
-            _driver.SwitchTo().Window(newWindow);
+            string newWindow = Driver.WindowHandles[Driver.WindowHandles.Count - 1].ToString();
+            Driver.SwitchTo().Window(newWindow);
         }
 
         public static void SwitchToOriginalWindow()
         {
-            string originalWindow = _driver.WindowHandles[_driver.WindowHandles.Count - 2].ToString();
-            _driver.SwitchTo().Window(originalWindow);
+            string originalWindow = Driver.WindowHandles[Driver.WindowHandles.Count - 2].ToString();
+            Driver.SwitchTo().Window(originalWindow);
         }
 
-        public static void SwitchToRemainingWindow()
+        public static void SwitchToFirstWindow()
         {
-            
-            _driver.SwitchTo().Window(_driver.WindowHandles.Last());
+            Driver.SwitchTo().Window(Driver.WindowHandles.First());
         }
-
+        
         public static void CloseWindow()
         {
-            
-            _driver.Close();
+            Driver.Close();
         }
 
         public static void ReloadThePage()
         {
-
-            _driver.Navigate().Refresh();
+            Driver.Navigate().Refresh();
         }
 
         public static void SwitchToIframe()
         {
-            _driver.SwitchTo().Frame(0);
-        }       
+            Driver.SwitchTo().Frame(0);
+        }
 
         public static void CloseAllDrivers()
         {
-            foreach (var key in Drivers.Keys)
-            {
-                Drivers[key].Quit();
-            }
-
-            Drivers.Clear();
-            _driver = default;
+            Driver.Quit();
+            _driverThreadLocal.Value = null;
         }
     }
 }
