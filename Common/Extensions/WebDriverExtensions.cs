@@ -35,7 +35,7 @@ namespace Yandex_practice.Common.Extensions
             try
             {
                 var wait = new WebDriverWait(webDriver, TimeSpan.FromSeconds(60));
-                wait.Until(n => element.Text.Length!= 0);
+                wait.Until(n => element.Text.Length!=0);
             }
             catch (WebDriverTimeoutException)
             {

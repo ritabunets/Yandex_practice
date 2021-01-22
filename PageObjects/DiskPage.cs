@@ -117,13 +117,7 @@ namespace Yandex_practice.PageObjects
             _paragraph.Click();
             _paragraph.SendKeys(docname);
             _savedStatus.ConfirmElementDisplayed();
-        }              
-
-        public bool CheckProgressStatus()
-        {
-            logger.Debug("Check in progress status");
-            return _notification.Displayed;
-        }       
+        }                 
 
         public void MoveDoc()
         {
@@ -162,8 +156,7 @@ namespace Yandex_practice.PageObjects
             WebDriverFactory.SwitchToNewWindow();
             WebDriverFactory.SwitchToIframe();
             _paragraph.Click();
-            //_paragraph.Clear();
-            _paragraph.SendKeys(Keys.Control + 'A' + Keys.Backspace);
+            _paragraph.Clear();
             _paragraph.SendKeys(updatedcontent);
             _savedStatus.ConfirmElementDisplayed();
         }

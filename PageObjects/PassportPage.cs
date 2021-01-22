@@ -11,8 +11,7 @@ namespace Yandex_practice.PageObjects
         private UIElement _myServices = new UIElement(Common.Enums.FindBy.XPath, "//a[@href='/profile/services']");
 
         private static Logger logger = LogManager.GetCurrentClassLogger();
-
-
+        
         public void OpenYaDisk()
         {
             logger.Debug("Open Yandex Disk");
